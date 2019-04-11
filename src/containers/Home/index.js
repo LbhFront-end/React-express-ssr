@@ -1,13 +1,46 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Header from '../../component/Header';
+import { connect } from 'react-redux';
+import { getHomeList } from './store/actions'
 
-// 同构：一套React 代码，在服务端执行一次，在客户端再执行一次
-const Home = () => {
-  return (
-    <div>
-      <div> Welcome to home!</div>
-      <button onClick={() => alert('click!')}>click</button>
-    </div>
-  )
+class Home extends Component {
+  componentDidMount() {
+    if (!this.props.list.length) {
+      this.props.getHomeList();
+    }
+  }
+
+  getList() {
+    const { list } = this.props;
+    return (
+      list.map((item) => <div key={item.id}>{item.title}</div>)
+    )
+  }
+
+  render() {
+    return (
+      <div>
+        <Header />
+        {this.getList()}
+        <button onClick={() => alert('click!')}>click</button>
+      </div>
+    )
+  }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  list: state.home.newList,
+})
+
+const mapDispatchToProps = dispatch => ({
+  getHomeList() {
+    dispatch(getHomeList());
+  }
+})
+
+Home.loadData = (store) => {
+  // 负责在服务器端渲染之前，把这个路由需要的数据提前加载好
+  return store.dispatch(getHomeList())
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
