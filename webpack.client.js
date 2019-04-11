@@ -11,4 +11,4 @@ const clientConfig = {
   },
 }
 
-module.exports = merge(config,clientConfig);
+module.exports = merge(config, clientConfig);

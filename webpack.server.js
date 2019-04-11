@@ -14,4 +14,4 @@ const serverConfig = {
   externals: [nodeExternals()]
 }
 
-module.exports = merge(config,serverConfig);
+module.exports = merge(config, serverConfig);
