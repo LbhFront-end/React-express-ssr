@@ -65,3 +65,63 @@ export const getStore = (req)=>{
 }
 ```
 
+## 某个页面加载出错导致所有页面无法加载展示的问题
+
+```javascript
+app.get('*', (req, res) => {
+  const store = getStore(req);
+  const matchedRoutes = matchRoutes(routes, req.path);
+  const promises = [];
+  matchedRoutes.forEach(item => {
+    if (item.route.loadData) {
+      promises.push(item.route.loadData(store))
+    }
+  });
+  Promise.all(promises).then(() => {
+    const context = {};
+    const html = render(store, routes, req, context);
+    if (context.action === 'REPLACE') {
+      res.redirect(301, context.url);
+    } else if (context.NOT_FOUNT) {
+      res.status(404);
+      res.send(html)
+    } else {
+      res.send(html)
+    }
+  }).catch(() => {
+    const context = {};
+    const html = render(store, routes, req, context);
+    if (context.action === 'REPLACE') {
+      res.redirect(301, context.url);
+    } else if (context.NOT_FOUNT) {
+      res.status(404);
+      res.send(html)
+    } else {
+      res.send(html)
+    }
+  })
+})
+```
+
+上面的代码在下面的情况会有问题
+
+一个页面要加载 A B C D 四个组件，这四哥组件都需要服务器端加载数据。假设 A 组件加载数据出错，B C D 组件有几种情况
+
+1. BCD 组件已经加载完成了
+2. BCD 接口比较慢，数据没有加载完成（这时候已经展示的就难以展示出来）
+
+解决方案：
+
+```javascript
+  matchedRoutes.forEach(item => {
+    if (item.route.loadData) {
+      const promise = new Promise((resolve, reject) => {
+        // catch(resolve)
+        item.route.loadData(store).then(resolve).catch(resolve)
+      })
+      promises.push(promise)
+    }
+  });
+```
+
+在 promises 外面包多一层 Promise 无论请求成功与否都是触发 resolve 继续执行下去，保证 Promise.all 执行，可以显示已成功的组件，出错的不展示，更加友好。
