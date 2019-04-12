@@ -6,7 +6,7 @@ import { actions } from './components/Header/store/'
 const App = (props) => {
   return (
     <div>
-      <Header />
+      <Header staticContext={props.staticContext} />
       {/* 显示页面对应的内容 */}
       {renderRoutes(props.route.routes)}
     </div>

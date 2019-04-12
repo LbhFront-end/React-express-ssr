@@ -2,22 +2,25 @@ import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { actions } from './store/';
+import styles from './style.css';
+import withStyle from '../../withStyle';
 
 class Header extends Component {
+
   render() {
     const { login, handleLogin, handleLogout } = this.props;
     return (
-      <div>
-        <Link to="/">首页</Link>&nbsp;|
+      <div className={styles.container}>
+        <Link to="/" className={styles.item}>首页</Link>
         {
           login ?
             <Fragment>
-              &nbsp;<Link to="/translation">翻译列表</Link>&nbsp;
-              |&nbsp;<span onClick={handleLogout}>退出</span>
+              <Link to="/translation" className={styles.item}>翻译列表</Link>
+              <span onClick={handleLogout} className={styles.item}>退出</span>
             </Fragment>
             :
             <Fragment>
-              &nbsp;<span onClick={handleLogin}>登录</span>&nbsp;
+              <div onClick={handleLogin} className={styles.item}>登录</div>
             </Fragment>
         }
       </div>
@@ -39,4 +42,4 @@ const mapDispatchToProps = dispatch => ({
   },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyle(Header, styles));

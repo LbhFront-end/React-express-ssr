@@ -15,7 +15,7 @@ export const render = (store, routes, req, context) => {
     </Provider>
   ))
   // 服务器端渲染 css
-  const cssStr = context.css ? context.css : '';
+  const cssStr = context.css.length ? context.css.join('\n') : '';
   return `
   <html>
     <head>
