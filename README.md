@@ -125,3 +125,46 @@ app.get('*', (req, res) => {
 ```
 
 在 promises 外面包多一层 Promise 无论请求成功与否都是触发 resolve 继续执行下去，保证 Promise.all 执行，可以显示已成功的组件，出错的不展示，更加友好。
+
+## 服务器端样式
+
+```javascript
+  module: {
+    rules: [{
+      test: /\.css?$/,
+      use: ['style-loader', {
+        loader: 'css-loader',
+        options: {
+          importLoaders: 1,
+          modules: true,
+          localIdentName: '[name]_[local]_[hash:base64:5]'
+        }
+      }]
+    }]
+  }
+```
+
+
+
+webpack style-loader出现 window is not defined 的问题
+
+解决方法：
+
+使用 isomorphic-style-loader 替换
+
+```javascript
+  module: {
+    rules: [{
+      test: /\.css?$/,
+      use: ['isomorphic-style-loader', {
+        loader: 'css-loader',
+        options: {
+          importLoaders: 1,
+          modules: true,
+          localIdentName: '[name]_[local]_[hash:base64:5]'
+        }
+      }]
+    }]
+  }
+```
+
