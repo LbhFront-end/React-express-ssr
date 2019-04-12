@@ -12,3 +12,7 @@
 ## express-http-proxy
 
 实现 代理 node中间层转发,同时使用axios 创建不同的 instance 简化分发的代码
+
+## react-router-config
+
+多级路由判断与渲染，并将路由参数传入全局的 props
