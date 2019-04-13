@@ -228,3 +228,6 @@ export const render = (store, routes, req, context) => {
 }
 ```
 
+## prerender(预渲染)
+
+当项目不需要追求加载速度而是单纯需要seo的时候不一定要用 ssr,而是用pre-render插件来生成ssr页面，用nginx 分发来区别爬虫跟用户分发不同的页面。
