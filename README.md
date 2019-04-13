@@ -193,6 +193,38 @@ webpack style-loader出现 window is not defined 的问题
   <meta name="description" content="这是lbh的SSR新闻页面-丰富多彩的资讯" />
 </Helmet>
 // 服务器端
-
+export const render = (store, routes, req, context) => {
+  const content = renderToString((
+    <Provider store={store}>
+      <StaticRouter location={req.path} context={context}>
+        <div>
+          {renderRoutes(routes)}
+        </div>
+      </StaticRouter>
+    </Provider>
+  ))
+  // seo 服务端渲染
+  const helmet = Helmet.renderStatic();
+  // 服务器端渲染 css
+  const cssStr = context.css.length ? context.css.join('\n') : '';
+  return `
+  <html>
+    <head>
+      ${helmet.title.toString()}
+      ${helmet.meta.toString()}
+      <style>${cssStr}</style>
+      <body>
+        <div id="root">${content}</div>
+        <script>
+            window.context = {
+              state:${JSON.stringify(store.getState())}
+            }
+        </script>
+        <script src="/index.js"></script>
+      </body>
+    </head>
+  </html>
+  `
+}
 ```
 
