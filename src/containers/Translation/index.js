@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { getTranslationList } from './store/actions';
 import styles from './style.css';
 import withStyle from '../../withStyle'
@@ -21,9 +22,19 @@ class Translation extends Component {
   }
 
   render() {
-    return this.props.login ? <div className={styles.container}>
-      {this.getList()}
-    </div> : <Redirect to='/' />
+    return (
+      <Fragment>
+        <Helmet>
+          <title>这是lbh的SSR新闻页面-丰富多彩的资讯</title>
+          <meta name="description" content="这是lbh的SSR新闻页面-丰富多彩的资讯" />
+        </Helmet>
+        {
+          this.props.login ? <div className={styles.container}>
+            {this.getList()}
+          </div> : <Redirect to='/' />
+        }
+      </Fragment>
+    )
   }
 }
 

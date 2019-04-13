@@ -168,3 +168,31 @@ webpack style-loader出现 window is not defined 的问题
   }
 ```
 
+## SEO(Search engine optimization)搜索引擎优化
+
+服务器端渲染，爬虫可以识别html 里面的内容。而客户端渲染只是展示一个dom 里面没有内容。
+
+### title 和 meta=Description
+
+搜索的结果，描述更详细，可以增加网站转换率
+
+### 如何做好SEO
+
+文字：原创性
+
+链接：相关性。外部链接数量
+
+多媒体
+
+### React-helmet
+
+```jsx
+// 客户端
+<Helmet>
+  <title>这是lbh的SSR新闻页面-丰富多彩的资讯</title>
+  <meta name="description" content="这是lbh的SSR新闻页面-丰富多彩的资讯" />
+</Helmet>
+// 服务器端
+
+```
+
